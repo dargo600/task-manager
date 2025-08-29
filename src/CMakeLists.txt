@@ -15,5 +15,5 @@ FetchContent_MakeAvailable(json)
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 include_directories(${Boost_INCLUDE_DIRS})
 
-add_executable(task-mgr main.cpp)
+add_executable(task-mgr main.cc json_server/listener.cc)
 target_link_libraries(task-mgr ${Boost_LIBRARIES} nlohmann_json::nlohmann_json)
