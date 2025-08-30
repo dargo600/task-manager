@@ -1,4 +1,10 @@
-#pragma once
+/**
+ * Copyright 2025 David Turgeon
+ * Use of this source code is goverened by a MIT-style license that can be
+ * found in the LICENSE file.
+ */
+#ifndef LISTENER_H
+#define LISTENER_H
 
 #include <boost/beast/version.hpp>
 #include <boost/beast/core.hpp>
@@ -12,21 +18,6 @@ using tcp = net::ip::tcp;
 
 http::response<http::string_body> handle_request(http::request<http::string_body> const &req);
 
-class Session : public std::enable_shared_from_this<Session>
-{
-    tcp::socket socket_;
-    beast::flat_buffer buffer_;
-    http::request<http::string_body> req_;
-
-public:
-    explicit Session(tcp::socket socket);
-    void run();
-
-private:
-    void do_read();
-    void do_write(http::response<http::string_body> res);
-};
-
 class Listener : public std::enable_shared_from_this<Listener>
 {
     net::io_context &ioc_;
@@ -38,3 +29,5 @@ public:
 private:
     void do_accept();
 };
+
+#endif
