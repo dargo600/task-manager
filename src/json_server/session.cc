@@ -11,9 +11,9 @@
 
 http::response<http::string_body> handle_request(http::request<http::string_body> const &req)
 {
-    if (req.method() == http::verb::get && req.target() == "/api/tasks" || req.target() == "/api/recipes")
+    ApiHandler api{http::status::ok, req.version()};
+    if (req.method() == http::verb::get && api.is_valid_request(req))
     {
-        ApiHandler api{http::status::ok, req.version()};
         if (req.target() == "/api/tasks")
         {
             nlohmann::json json_response = {{"message", "Still a GET request for tasks"}};
@@ -27,7 +27,7 @@ http::response<http::string_body> handle_request(http::request<http::string_body
         }
         else
         {
-            return api.generate_response(req.keep_alive());
+            return api.generate_response(req);
         }
     }
     else if (req.method() == http::verb::post && req.target() == "/api/tasks")
