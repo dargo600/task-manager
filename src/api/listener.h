@@ -3,8 +3,8 @@
  * Use of this source code is goverened by a MIT-style license that can be
  * found in the LICENSE file.
  */
-#ifndef LISTENER_H
-#define LISTENER_H
+#ifndef API_LISTENER_H
+#define API_LISTENER_H
 
 #include <boost/beast/version.hpp>
 #include <boost/beast/core.hpp>

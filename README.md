@@ -13,6 +13,7 @@ The goal of this project is:
 Using ubuntu 24
 ```
 sudo apt-get install libboost-dev libboost-filesystem-dev libboost-system-dev #version 1.83.0
+sudo apt-get install libmd4c-dev # md to html conversion
 ```
 
 ### Installation

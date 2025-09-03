@@ -5,13 +5,13 @@
  */
 
 #include "session.h"
-#include "api_handler.h"
+#include "handler.h"
 
 #include <nlohmann/json.hpp>
 
 http::response<http::string_body> handle_request(http::request<http::string_body> const &req)
 {
-    ApiHandler api{http::status::ok, req.version()};
+    Handler api{http::status::ok, req.version()};
     if (req.method() == http::verb::get && api.is_valid_request(req))
     {
         if (req.target() == "/api/tasks")
