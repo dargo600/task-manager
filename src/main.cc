@@ -3,11 +3,15 @@
  * Use of this source code is goverened by a MIT-style license that can be
  * found in the LICENSE file.
  */
-
-#include <iostream>
 #include "api/listener.h"
 
-namespace net = boost::asio; // from <boost/asio.hpp>
+#include <iostream>
+
+// namespace beast = boost::beast;
+// namespace http = beast::http;
+using Listener = api::Listener;
+namespace net = boost::asio;
+using tcp = net::ip::tcp;
 
 int main()
 {

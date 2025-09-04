@@ -13,7 +13,7 @@ The goal of this project is:
 Using ubuntu 24
 ```
 sudo apt-get install libboost-dev libboost-filesystem-dev libboost-system-dev #version 1.83.0
-sudo apt-get install libmd4c-dev # md to html conversion
+sudo apt-get install pandoc
 ```
 
 ### Installation
@@ -32,3 +32,4 @@ sudo apt-get install libmd4c-dev # md to html conversion
 ## References
 
 * [Building Restul APIS in C++](https://medium.com/@AlexanderObregon/building-restful-apis-with-c-4c8ac63fe8a7)
+* [Google C++ Style Guide] (https://google.github.io/styleguide/cppguide.html)
