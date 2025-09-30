@@ -7,8 +7,6 @@
 
 #include <iostream>
 
-// namespace beast = boost::beast;
-// namespace http = beast::http;
 using Listener = api::Listener;
 namespace net = boost::asio;
 using tcp = net::ip::tcp;
