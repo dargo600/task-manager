@@ -1,3 +1,9 @@
+/**
+ * Copyright 2025 David Turgeon
+ * Use of this source code is governed by a MIT-style license that can be
+ * found in the LICENSE file.
+ */
+
 #include "handler.h"
 
 #include <iostream>
@@ -14,12 +20,12 @@ namespace api
         namespace net = boost::asio;
     }
 
-    Handler::Handler(http::status status, unsigned version)
-        : status_(status), version_(version)
+    Handler::Handler(http::status status, unsigned version, IMarkDownParser &parser)
+        : status_(status), version_(version), md_parser_(parser)
     {
         allowed_paths_ = {"/data/", "/api/tasks/"};
     }
-
+    
     bool Handler::is_valid_request(const http::request<http::string_body> &req) const
     {
         for (const auto &path : allowed_paths_)
@@ -33,30 +39,7 @@ namespace api
         return false;
     }
 
-    // Helper function to convert markdown to HTML using pandoc
-    std::string Handler::md_to_html(const std::string &md_filename, const std::string &html_filename) const
-    {
-        std::string html;
-        // Run pandoc to convert markdown to HTML
-        std::string cmd = "pandoc " + md_filename + " -f markdown -t html -o " + html_filename;
-        int ret = std::system(cmd.c_str());
-        if (ret == 0)
-        {
-            std::ifstream ifs(html_filename);
-            std::stringstream buffer;
-            buffer << ifs.rdbuf();
-            html = buffer.str();
-        }
-        else
-        {
-            html = "<html><head><title>Error</title></head><body><p>Error Locating html page.</p></body></html>";
-            std::ofstream ofs(html_filename);
-            ofs << html;
-        }
-        return html;
-    }
-
-    http::response<http::string_body> Handler::generate_response(const http::request<http::string_body> &req) const
+    http::response<http::string_body> Handler::generate_response(const http::request<http::string_body> &req)
     {
         std::stringstream buffer;
         std::string filename = req.target();
@@ -70,11 +53,11 @@ namespace api
         std::string html_content;
         if (!std::filesystem::exists(filename))
         {
-            int pos = filename.find(".html");
+            std::size_t pos = filename.find(".html");
             if (pos != std::string::npos)
             {
                 std::string md_file = filename.substr(0, pos) + ".md";
-                buffer << md_to_html(md_file, filename);
+                buffer << md_parser_.md_to_html(md_file, filename);
                 html_content = buffer.str();
             }
         }

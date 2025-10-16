@@ -1,11 +1,12 @@
 /**
  * Copyright 2025 David Turgeon
- * Use of this source code is goverened by a MIT-style license that can be
+ * Use of this source code is governed by a MIT-style license that can be
  * found in the LICENSE file.
  */
 
 #include "session.h"
 #include "handler.h"
+#include "pandoc_md_parser.h"
 
 #include <nlohmann/json.hpp>
 
@@ -13,7 +14,8 @@ namespace api
 {
     http::response<http::string_body> handle_request(http::request<http::string_body> const &req)
     {
-        Handler api{http::status::ok, req.version()};
+        PandocMdParser parser{};
+        Handler api{http::status::ok, req.version(), parser};
         if (req.method() == http::verb::get && api.is_valid_request(req))
         {
             if (req.target() == "/api/tasks")
