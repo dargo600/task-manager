@@ -39,7 +39,7 @@ FetchContent_MakeAvailable(googletest)
 
 option(ENABLE_ASAN "Enable AddressSanitizer" ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror -D_FORTIFY_SOURCE=2 -fstack-protector-strong")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror -D_FORTIFY_SOURCE=2 -fstack-protector-strong")
 if(ENABLE_ASAN)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -fno-omit-frame-pointer")

@@ -18,20 +18,30 @@ build()
         exit 1
     fi
     (cd build && ctest)
+    report
 }
 
 report()
 {
     mkdir lcov-report
-    lcov --capture --directory build/CMakeFiles/runTests.dir --output-file lcov-report/coverage.info
+    lcov --ignore-errors mismatch --capture --directory build/tests/CMakeFiles --output-file lcov-report/coverage.info
     result=$?
     if [ $result -ne 0  ]; then
         echo -e "\nFIXME: Failed to do lcov result: $result"
+        exit 1
     fi
-    genhtml lcov-report/coverage.info --output-directory lcov-report
+    echo "Removing coverage for unwanted directories"
+    lcov --ignore-errors unused --remove lcov-report/coverage.info 'gmock*' 'nlohmann*' '/usr/*' '*/googletest/*' '*/test/*' '*/tests/*' '*/external/*' --output-file lcov-report/coverage.info
+    result=$?
+    if [ $result -ne 0  ]; then
+        echo -e "\nFIXME: Failed to do lcov remove: $result"
+        exit 1
+    fi
+    genhtml lcov-report/coverage.info --ignore-errors source --output-directory lcov-report
     result=$?
     if [ $result -ne 0  ]; then
         echo -e "\nFIXME: Failed to do genhtml: $result"
+        exit 1
     fi
 }
 
