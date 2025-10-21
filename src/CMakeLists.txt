@@ -5,7 +5,7 @@ endif()
 
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 include_directories(${Boost_INCLUDE_DIRS}
-    ${PROJECT_SOURCE_DIR}/api)
+    ${PROJECT_SOURCE_DIR}/src/api)
 set(API_SOURCES
 "api/handler.cc"
 "api/listener.cc"

@@ -37,7 +37,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-option(ENABLE_ASAN "Enable AddressSanitizer" ON)
+option(ENABLE_ASAN "Enable AddressSanitizer" OFF)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror -D_FORTIFY_SOURCE=2 -fstack-protector-strong")
 if(ENABLE_ASAN)

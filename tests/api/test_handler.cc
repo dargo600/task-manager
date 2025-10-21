@@ -25,6 +25,14 @@ protected:
 
     void SetUp() override
     {
+        mode_t mode = 0755;
+        if (mkdir("res", mode) == 0) {
+            std::cout << "Created directory: res" << std::endl;
+        } else if (errno == EEXIST) {
+            std::cout << "Directory already exists: res" << std::endl;
+        } else {
+            std::cerr << "Error creating directory: " << strerror(errno) << std::endl;
+        }
         // Create a test markdown file
         std::ofstream("res/test.md") << "# Test Title\nThis is a test.";
     }
@@ -53,4 +61,21 @@ TEST_F(HandlerTest, GeneratesResponseForMarkdown)
     EXPECT_EQ(res[http::field::content_type], "text/html");
     EXPECT_NE(res.body().find("<h1>Test Title</h1>"), std::string::npos);
     EXPECT_NE(res.body().find("<p>This is a test.</p>"), std::string::npos);
+}
+
+TEST_F(HandlerTest, HandlesMissingMarkdownFile)
+{
+    api::MockMarkDownParser mockParser;
+    Handler handler(boost::beast::http::status::ok, 11, mockParser);
+    const std::string md_filename = "res/test2.md";
+    const std::string get_html_filename = "/data/test2.html";
+
+    int version = 11; // http version 1.1
+    http::request<http::string_body> req{http::verb::get, get_html_filename, version};
+    auto res = handler.generate_response(req);
+
+    // Check that response is OK and contains HTML content
+    EXPECT_EQ(res.result(), http::status::ok);
+    EXPECT_EQ(res[http::field::content_type], "text/html");
+    EXPECT_NE(res.body().find("Error Locating html page"), std::string::npos);
 }

@@ -18,14 +18,18 @@ sudo apt-get install pandoc
 
 ### Installation
 ```
-./build.sh
+# Build and run tests
+./build.sh all
+
+#Builds lcoverage report
+./build.sh report
 ```
 
 ## RoadMap
 - [x] Add initial json code
+- [X] Add unit testing, create lcov unit tests
 - [] Determine Structure of a task 
 - [] Store tasks in a database
-- [] Add unit testing
 - []
 
 

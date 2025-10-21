@@ -3,8 +3,8 @@
 
 build()
 {
-    [ ! -e build ] && mkdir build
-    cp -r res build/
+    [ ! -e build/tests ] && mkdir -p build/tests
+    cp -r res build/tests/
     cmake -S . -B build -Wno-dev
     ret=$?
     if [ $ret -ne 0  ]; then
@@ -17,13 +17,12 @@ build()
         echo "Failed to do cmake"
         exit 1
     fi
-    (cd build && ctest)
-    report
+    (cd build && ctest --output-on-failure)
 }
 
 report()
 {
-    mkdir lcov-report
+    [ ! -e lcov-report ] && mkdir lcov-report
     lcov --ignore-errors mismatch --capture --directory build/tests/CMakeFiles --output-file lcov-report/coverage.info
     result=$?
     if [ $result -ne 0  ]; then

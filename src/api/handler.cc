@@ -57,8 +57,11 @@ namespace api
             if (pos != std::string::npos)
             {
                 std::string md_file = filename.substr(0, pos) + ".md";
-                buffer << md_parser_.md_to_html(md_file, filename);
-                html_content = buffer.str();
+                if (std::filesystem::exists(md_file))
+                {
+                    buffer << md_parser_.md_to_html(md_file, filename);
+                    html_content = buffer.str();
+                }
             }
         }
         else
