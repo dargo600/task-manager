@@ -25,9 +25,9 @@ namespace api
         ~Handler() = default;
 
         // Item 11 Effective Modern C++: Disable copy and assignment
-/**         Handler(const Handler &) = delete;
+        Handler(const Handler &) = delete;
         Handler &operator=(const Handler &) = delete;
-        */
+        
         bool is_valid_request(const http::request<http::string_body> &req) const;
 
         http::response<http::string_body> generate_response(const http::request<http::string_body> &req);
