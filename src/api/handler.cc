@@ -63,8 +63,7 @@ namespace api
         * @param[in] filename The name of the HTML file to retrieve or generate.
         * @return The HTML content as a string.
         */
-    void Handler::get_html_response(const http::request<http::string_body> &req, 
-const std::string &filename, std::string &html_content)
+    void Handler::get_html_response(const std::string &filename, std::string &html_content)
     {
         if (std::filesystem::exists(filename)) {
             std::ifstream ifs(filename);
@@ -75,7 +74,7 @@ const std::string &filename, std::string &html_content)
             generate_html_file(filename, html_content);
         }
         if (html_content.empty()) {
-            html_content = "<html><head><title>Not Found</title></head><body><p>The resource '" + std::string(req.target()) + "' was not found.</p></body></html>";
+            html_content = "<html><head><title>Not Found</title></head><body><p>Error Locating html page.</p></body></html>";
         }
     }
 
@@ -94,7 +93,7 @@ const std::string &filename, std::string &html_content)
         if (filename.rfind(api_prefix, 0) == 0) {
             filename = "res/" + filename.substr(api_prefix.length());
         }
-        get_html_response(req, filename, html_content);
+        get_html_response(filename, html_content);
         http::response<http::string_body> res{http::status::ok, req.version()};
         res.set(http::field::server, "Beast");
         res.set(http::field::content_type, "text/html");

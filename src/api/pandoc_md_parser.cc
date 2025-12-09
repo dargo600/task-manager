@@ -37,27 +37,4 @@ namespace api
             ofs << html_content;
         }
     }
-
-    #if 0
-    std::string PandocMdParser::get_html(const std::string &md_content)
-    {
-        // Create temporary filenames
-        std::string md_filename = "temp_md_file.md";
-        std::string html_filename = "temp_html_file.html";
-
-        // Write markdown content to temporary file
-        std::ofstream ofs(md_filename);
-        ofs << md_content;
-        ofs.close();
-
-        // Convert markdown to HTML
-        std::string html = md_to_html(md_filename, html_filename);
-
-        // Clean up temporary files
-        std::filesystem::remove(md_filename);
-        std::filesystem::remove(html_filename);
-
-        return html;
-    }
-    #endif
 }
