@@ -4,17 +4,20 @@
  * found in the LICENSE file.
  */
 
+#include <iostream>
+#include <nlohmann/json.hpp>
+
 #include "session.h"
 #include "handler.h"
 #include "pandoc_md_parser.h"
 
-#include <nlohmann/json.hpp>
 
 namespace api
 {
     http::response<http::string_body> handle_request(http::request<http::string_body> const &req)
     {
-        PandocMdParser parser{};
+        PandocMdParser &parser = PandocMdParser::getInstance();
+        std::cout << "Created PandocMdParser instance in handle_request " << std::addressof(parser);
         Handler api{http::status::ok, req.version(), parser};
         if (req.method() == http::verb::get && api.is_valid_request(req))
         {

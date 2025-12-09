@@ -3,9 +3,9 @@
  * Use of this source code is governed by a MIT-style license that can be
  * found in the LICENSE file.
  */
-#include "api/listener.h"
-
 #include <iostream>
+
+#include "api/listener.h"
 
 using Listener = api::Listener;
 namespace net = boost::asio;

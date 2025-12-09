@@ -11,7 +11,7 @@ include_directories(${Boost_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/src/api
     ${PROJECT_SOURCE_DIR}/tests/api)
 
-find_package(Boost REQUIRED COMPONENTS system filesystem)
+find_package(Boost REQUIRED COMPONENTS system log log_setup filesystem)
 add_executable(tests
     api/test_handler.cc
     ../src/api/handler.cc
@@ -24,6 +24,8 @@ target_link_libraries(
     GTest::gtest_main
     GTest::gmock_main
     ${Boost_LIBRARIES}
+    Boost::log
+    Boost::log_setup
     nlohmann_json::nlohmann_json
 )
 include(GoogleTest)

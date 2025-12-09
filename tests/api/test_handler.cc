@@ -77,7 +77,26 @@ TEST_F(HandlerTest, HandlesMissingMarkdownFile)
     auto res = handler.generate_response(req);
 
     // Check that response is OK and contains HTML content
-    EXPECT_EQ(res.result(), http::status::ok);
+    EXPECT_EQ(res.result(), http::status::not_found);
     EXPECT_EQ(res[http::field::content_type], "text/html");
     EXPECT_NE(res.body().find("Error Locating html page"), std::string::npos);
 }
+
+TEST_F(HandlerTest, HTMLReturnsNoData)
+{
+    api::MockMarkDownParser mockParser;
+    Handler handler(boost::beast::http::status::ok, 11, mockParser);
+    const std::string md_filename = "res/test2.md";
+    const std::string html_filename = "res/test2.html";
+    const std::string get_html_filename = "/data/test2.html";
+    int version = 11; // http version 1.1
+    http::request<http::string_body> req{http::verb::get, get_html_filename, version};
+    auto res = handler.generate_response(req);
+
+    // Check that HTML errors appropriately if it has no data
+    EXPECT_EQ(res.result(), http::status::not_found);
+    EXPECT_EQ(res[http::field::content_type], "text/html");
+    EXPECT_NE(res.body().find("<title>Not Found</title>"), std::string::npos);
+    EXPECT_NE(res.body().find("Error Locating html page"), std::string::npos);
+}
+

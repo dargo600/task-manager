@@ -4,12 +4,12 @@
  * found in the LICENSE file.
  */
 
-#include "handler.h"
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <filesystem>
+
+#include "handler.h"
 
 namespace api
 {
@@ -28,9 +28,9 @@ namespace api
 
     /**
      * Determines if the incoming HTTP request is valid based on allowed paths.
-        * @param[in] req The incoming HTTP request.
-        * @return True if the request is valid, false otherwise.
-        */
+     * @param[in] req The incoming HTTP request.
+     * @return True if the request is valid, false otherwise.
+     */
     bool Handler::is_valid_request(const http::request<http::string_body> &req) const
     {
         for (const auto &path : allowed_paths_)
@@ -44,6 +44,12 @@ namespace api
         return false;
     }
 
+    /**
+    * Generates an HTML file from a Markdown file if it exists.
+    * @param[in] filename The name of the HTML file to generate.
+    * @param[out] html_content The generated HTML content that corresponds to
+    *                          the Markdown file or left uninitialized.
+    */
     void Handler::generate_html_file(const std::string &filename, std::string &html_content)
     {
         std::size_t pos = filename.find(".html");
@@ -58,12 +64,12 @@ namespace api
 
     /**
     * Generates an HTML response by initially checking to see if an HTML file
-        * exists.  If it does not then it checks to see if the corresponding
-        * markdown file exists and converts it to HTML.
-        * @param[in] filename The name of the HTML file to retrieve or generate.
-        * @return The HTML content as a string.
-        */
-    void Handler::get_html_response(const std::string &filename, std::string &html_content)
+    * exists.  If it does not then it checks to see if the corresponding
+    * markdown file exists and converts it to HTML.
+    * @param[in] filename The name of the HTML file to retrieve or generate.
+    * @param[out] html_content The expected HTML content depending on if there is an md file
+    */
+    void Handler::get_html_response_contents(const std::string &filename, std::string &html_content)
     {
         if (std::filesystem::exists(filename)) {
             std::ifstream ifs(filename);
@@ -73,16 +79,13 @@ namespace api
         } else {
             generate_html_file(filename, html_content);
         }
-        if (html_content.empty()) {
-            html_content = "<html><head><title>Not Found</title></head><body><p>Error Locating html page.</p></body></html>";
-        }
     }
 
     /**
      * Generates an HTTP response based on the incoming request.
-        * @param[in] req The incoming HTTP request.
-        * @return The generated HTTP response.
-        */
+     * @param[in] req The incoming HTTP request.
+     * @return The generated HTTP response.
+     */
     http::response<http::string_body> Handler::generate_response(const http::request<http::string_body> &req)
     {
         std::stringstream buffer;
@@ -93,8 +96,15 @@ namespace api
         if (filename.rfind(api_prefix, 0) == 0) {
             filename = "res/" + filename.substr(api_prefix.length());
         }
-        get_html_response(filename, html_content);
-        http::response<http::string_body> res{http::status::ok, req.version()};
+        get_html_response_contents(filename, html_content);
+       
+        http::status status = http::status::ok;
+        if (html_content.empty()) {
+            status = http::status::not_found;
+            html_content = "<html><head><title>Not Found</title></head><body><p>Error Locating html page.</p></body></html>";
+            std::cout << "FIXME HTML content is empty for " << filename << std::endl;
+        }
+        http::response<http::string_body> res{static_cast<http::status>(status), req.version()};
         res.set(http::field::server, "Beast");
         res.set(http::field::content_type, "text/html");
         res.keep_alive(req.keep_alive());

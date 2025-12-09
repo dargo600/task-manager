@@ -21,7 +21,7 @@ namespace api
     class Handler
     {
     public:
-        Handler(http::status status, unsigned version, IMarkDownParser &parser);
+        Handler(const http::status status, const unsigned version, IMarkDownParser &parser);
         ~Handler() = default;
 
         // Item 11 Effective Modern C++: Disable copy and assignment
@@ -33,11 +33,11 @@ namespace api
 
     private:
         void generate_html_file(const std::string &filename, std::string &html_content);
-        void get_html_response(const std::string &filename, std::string &html_content);
+        void get_html_response_contents(const std::string &filename, std::string &html_content);
         http::status status_;
         unsigned version_;
         std::vector<std::string> allowed_paths_;
-        IMarkDownParser& md_parser_;
+        IMarkDownParser &md_parser_;
     };
 }
 
