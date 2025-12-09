@@ -49,8 +49,10 @@ TEST_F(HandlerTest, GeneratesResponseForMarkdown)
     const std::string md_filename = "res/test.md";
     const std::string html_filename = "res/test.html";
     const std::string get_html_filename = "/data/test.html";
-    EXPECT_CALL(mockParser, md_to_html(md_filename, html_filename))
-        .WillOnce(::testing::Return("<h1>Test Title</h1><p>This is a test.</p>"));
+    EXPECT_CALL(mockParser, create_html(md_filename, html_filename, ::testing::_))
+        .WillOnce(::testing::Invoke([](const std::string& /*md*/, const std::string& /*html*/, std::string& out) {
+            out = "<h1>Test Title</h1>\n<p>This is a test.</p>";
+        }));
 
     int version = 11; // http version 1.1
     http::request<http::string_body> req{http::verb::get, get_html_filename, version};

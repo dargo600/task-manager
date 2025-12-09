@@ -7,7 +7,7 @@
 namespace api {
     class MockMarkDownParser : public IMarkDownParser {
     public:
-        MOCK_METHOD(std::string, md_to_html, (const std::string &md_filename, const std::string &html_filename), (override));
+        MOCK_METHOD(void, create_html, (const std::string &md_filename, const std::string &html_filename, std::string &html_content), (override));
     };
 }
 

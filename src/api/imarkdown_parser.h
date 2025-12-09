@@ -13,7 +13,7 @@ namespace api
     class IMarkDownParser
     {
     public:
-        virtual std::string md_to_html(const std::string &md_filename, const std::string &html_filename) = 0;
+        virtual void create_html(const std::string &md_filename, const std::string &html_filename, std::string &html_content) = 0;
     };
 }
 

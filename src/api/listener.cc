@@ -21,6 +21,7 @@ namespace api
         namespace net = boost::asio;
         using tcp = net::ip::tcp;
     }
+
     // Listener implementation
     Listener::Listener(net::io_context &ioc, tcp::endpoint endpoint)
         : ioc_(ioc), acceptor_(net::make_strand(ioc))

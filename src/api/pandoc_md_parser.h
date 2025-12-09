@@ -14,7 +14,7 @@ namespace api
     class PandocMdParser : public IMarkDownParser
     {
     public:
-        std::string md_to_html(const std::string &md_filename, const std::string &html_filename) override;
+        void create_html(const std::string &md_filename, const std::string &html_filename, std::string &html_content) override;
     };
 }
 

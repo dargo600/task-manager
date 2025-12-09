@@ -29,10 +29,11 @@ namespace api
         Handler &operator=(const Handler &) = delete;
         
         bool is_valid_request(const http::request<http::string_body> &req) const;
-
         http::response<http::string_body> generate_response(const http::request<http::string_body> &req);
 
     private:
+        void generate_html_file(const std::string &filename, std::string &html_content);
+        void get_html_response(const http::request<http::string_body> &req, const std::string &filename, std::string &html_content);
         http::status status_;
         unsigned version_;
         std::vector<std::string> allowed_paths_;
