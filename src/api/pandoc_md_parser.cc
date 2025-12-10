@@ -9,6 +9,7 @@
 #include <fstream>
 #include <sstream>
 #include <filesystem>
+#include <syslog.h>
 
 #include "pandoc_md_parser.h"
 
@@ -32,7 +33,6 @@ namespace api
     void PandocMdParser::create_html(const std::string &md_filename, const std::string &html_filename, std::string &html_content)
     {
         // Run pandoc to convert markdown to HTML
-        std::cout << "PandocMdParser parsing " << reinterpret_cast<std::uintptr_t>(this);
         std::string cmd = "pandoc " + md_filename + " -f markdown -t html -o " + html_filename;
         int ret = std::system(cmd.c_str());
         if (ret == 0) {
@@ -41,12 +41,11 @@ namespace api
             buffer << ifs.rdbuf();
             html_content = buffer.str();
         } else {
-            std::cout << "Failed to create html file using pandoc." << std::endl;
+            syslog(LOG_ERR, "Failed to create html file using pandoc.");
         }
     }
 
     PandocMdParser::PandocMdParser()
     {
-        std::cout << "Address in PandocMdParser " + std::to_string(reinterpret_cast<std::uintptr_t>(this));
     }
 }

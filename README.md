@@ -35,5 +35,5 @@ sudo apt-get install pandoc
 
 ## References
 
-* [Building Restul APIS in C++](https://medium.com/@AlexanderObregon/building-restful-apis-with-c-4c8ac63fe8a7)
+* [Building Resftul APIS in C++](https://medium.com/@AlexanderObregon/building-restful-apis-with-c-4c8ac63fe8a7)
 * [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html)

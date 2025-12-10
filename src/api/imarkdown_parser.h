@@ -8,17 +8,19 @@
 
 #include <string>
 
-namespace api
-{
-    class IMarkDownParser
-    {
-    public:
-        virtual ~IMarkDownParser() = default;
-        // this object is cheap so we allow default copy and assignment
-        // IMarkDownParser(const IMarkDownParser &) = delete;
-        // IMarkDownParser &operator=(const IMarkDownParser &) = delete;
-        virtual void create_html(const std::string &md_filename, const std::string &html_filename, std::string &html_content) = 0;
-    };
-}
+#include "non_copyable.h"
+
+namespace api {
+class IMarkDownParser : public NonCopyable {
+   public:
+    virtual ~IMarkDownParser() = default;
+    // this object is cheap so we allow default copy and assignment
+    // IMarkDownParser(const IMarkDownParser &) = delete;
+    // IMarkDownParser &operator=(const IMarkDownParser &) = delete;
+    virtual void create_html(const std::string &md_filename,
+                             const std::string &html_filename,
+                             std::string &html_content) = 0;
+};
+}  // namespace api
 
 #endif

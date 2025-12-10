@@ -9,6 +9,7 @@ message(STATUS "Project Source Directory: ${PROJECT_SOURCE_DIR}")
 
 include_directories(${Boost_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}/src/api
+    ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/tests/api)
 
 find_package(Boost REQUIRED COMPONENTS system log log_setup filesystem)

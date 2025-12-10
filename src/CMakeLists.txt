@@ -6,7 +6,8 @@ endif()
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 include_directories(${Boost_INCLUDE_DIRS}
-    ${PROJECT_SOURCE_DIR}/src/api)
+    ${PROJECT_SOURCE_DIR}/src/api
+    ${PROJECT_SOURCE_DIR}/src)
 set(API_SOURCES
 "api/handler.cc"
 "api/listener.cc"
